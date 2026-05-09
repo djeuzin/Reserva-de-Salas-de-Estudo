@@ -7,3 +7,7 @@ class SalaDeEstudos(Sala):
 		self.local = local
 		self.tem_lousa = tem_lousa
 		self.capacidade = capacidade
+		self.disponibilidade = {}
+
+		for i in range(8, 23):
+			self.disponibilidade[i] = True
