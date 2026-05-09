@@ -10,8 +10,8 @@ class TipoDeSala(Enum):
 	LABORATORIO = 3
 
 class SalaFactory:
-	def get_instance(self, tipo_de_sala: int, local: str, capacidade: int, other: Any = None) -> Sala:
-		match TipoDeSala:
+	def get_instance(self, tipo_de_sala: int, local: str, capacidade: int, other: any = None) -> Sala:
+		match tipo_de_sala:
 			case TipoDeSala.SALA_ESTUDOS:
 				return SalaDeEstudos(local, capacidade, other)
 			case TipoDeSala.SALA_AULA:
