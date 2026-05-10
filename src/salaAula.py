@@ -6,3 +6,7 @@ class SalaDeAula(Sala):
 		self.local = local
 		self.capacidade = capacidade
 		self.id = IDGenerator().get()
+		self.disponibilidade = {}
+
+		for i in range(8, 23):
+			self.disponibilidade[i] = True
