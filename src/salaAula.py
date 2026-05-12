@@ -7,6 +7,4 @@ class SalaDeAula(Sala):
 		self.capacidade = capacidade
 		self.id = IDGenerator().get()
 		self.disponibilidade = {}
-
-		for i in range(8, 23):
-			self.disponibilidade[i] = True
+		self._observers = []

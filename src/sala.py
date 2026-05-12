@@ -3,12 +3,9 @@ from abc import ABCMeta
 class Sala(metaclass=ABCMeta):
 	capacidade: int
 	local: str
-	_id: int
-	disponibilidade: dict[int, bool]
+	id: int
+	disponibilidade: dict[str, bool]
 	_observers: list
-
-	def __init__(self):
-		self._observers = []
 
 	def registrar_observer(self, observer):
 		"""Registra um observador"""
@@ -19,3 +16,7 @@ class Sala(metaclass=ABCMeta):
 		"""Remove um observador"""
 		if observer in self._observers:
 			self._observers.remove(observer)
+
+	def notificar(self, msg: str):
+		for obs in self._observers:
+			obs.recebe(msg)
