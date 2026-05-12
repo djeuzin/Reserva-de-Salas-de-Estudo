@@ -37,3 +37,17 @@ def test_reserva_sala_sucesso():
         {"usuario": "Carlos", "sala": sala.id, "hora": "10:00:00"}
     ]
     assert reserva._salas == [sala]
+
+
+def test_cancelar_reserva_sucesso():
+    reserva = Reserva()
+    sala = SalaDeEstudos("Biblioteca", 15, True)
+    reserva.add_sala(sala)
+    aluno = Aluno("Carlos", "111111")
+
+    reserva.reservar(aluno, sala, 10)
+    resultado = reserva.cancelar(aluno, sala, 10)
+
+    assert resultado is True
+    assert sala.disponibilidade == {}
+    assert reserva.reservas == []
