@@ -136,7 +136,7 @@ class Reserva:
         """
         self._estrategia = strat
 
-    def cancelar(self, usuario, sala, hora: int) -> None:
+    def cancelar(self, usuario, sala, hora: int) -> bool:
         """
         Cancela uma reserva existente do usuário e notifica todos os observers da sala.
         """
@@ -152,7 +152,7 @@ class Reserva:
 
         if reserva is None:
             usuario.recebe(f"[ERRO] Nenhuma reserva encontrada para cancelar.")
-            return
+            return False
 
         self.reservas.remove(reserva)
         del sala.disponibilidade[horario_str]
@@ -161,3 +161,12 @@ class Reserva:
             f"[CANCELADO] Reserva da sala {sala.id} às {horario_str} "
             f"cancelada por {usuario.name}."
         )
+
+        return True
+
+    def alterar(self, usuario, sala, hora_antiga: int, hora_nova: int) -> None:
+        if not self.cancelar(usuario, sala, hora_antiga):
+            usuario.recebe(f"[ERRO] Nenhuma reserva encontrada para alterar.")
+            return
+
+        self.reservar(usuario, sala, hora_nova)

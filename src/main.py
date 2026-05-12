@@ -78,7 +78,7 @@ def main():
     print("  CANCELAMENTO DE RESERVA")
     print("=" * 55)
  
-    gerente.cancelar(aluno3, sala2, 14)
+    gerente.alterar(aluno3, sala2, 14, 15)
  
     print()
     gerente.list_salas_disponiveis()
