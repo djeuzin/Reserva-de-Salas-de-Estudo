@@ -34,7 +34,7 @@ class Reserva:
             cls._instance._horarios = []
 
             for i in range(8, 23):
-                cls._horarios.append(str(dt.time(i, 0, 0)))
+                cls._instance._horarios.append(str(dt.time(i, 0, 0)))
 
         return cls._instance
     
@@ -56,7 +56,7 @@ class Reserva:
             }
 
             if nova_reserva["hora"] in sala.disponibilidade:
-                print("Sala {sala.id} já reservada nessa hora.")
+                print(f"Sala {sala.id} já reservada nessa hora.")
                 return
 
             sala.disponibilidade[nova_reserva["hora"]] = True
