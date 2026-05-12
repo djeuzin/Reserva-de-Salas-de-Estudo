@@ -6,8 +6,18 @@ class Singleton:
 		return cls._instance
 
 class IDGenerator(Singleton):
+	"""
+	Classe para gerar IDs de salas.
+
+	Atributos:
+	- id: Identificador que será retornado.
+	"""
 	id: int = 10
 
 	def get(self) -> int:
+		"""
+		Método que retorna um id que pode ser utilizado.
+		Incrementa o id corrente para posteriores chamadas.
+		"""
 		self.id = self.id + 1
 		return self.id - 1
