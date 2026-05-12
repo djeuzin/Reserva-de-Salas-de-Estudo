@@ -2,6 +2,7 @@ import datetime as dt
 import threading
 from sala import Sala
 from estrategia import EstrategiaFila, FilaFIFO
+import json
 
 class Reserva:
     """
@@ -136,4 +137,45 @@ class Reserva:
         """
         self._estrategia = strat
 
+    def cancelar(self, usuario, sala, hora: int) -> bool:
+        """
+        Cancela uma reserva existente do usuário e notifica todos os observers da sala.
+        """
+        horario_str = str(dt.time(hora, 0, 0))
 
+        reserva = next(
+            (r for r in self.reservas
+             if r["usuario"] == usuario.name
+             and r["sala"] == sala.id
+             and r["hora"] == horario_str),
+            None
+        )
+
+        if reserva is None:
+            usuario.recebe(f"[ERRO] Nenhuma reserva encontrada para cancelar.")
+            return False
+
+        self.reservas.remove(reserva)
+        del sala.disponibilidade[horario_str]
+
+        sala.notificar(
+            f"[CANCELADO] Reserva da sala {sala.id} às {horario_str} "
+            f"cancelada por {usuario.name}."
+        )
+
+        return True
+
+    def alterar(self, usuario, sala, hora_antiga: int, hora_nova: int) -> None:
+        if not self.cancelar(usuario, sala, hora_antiga):
+            usuario.recebe(f"[ERRO] Nenhuma reserva encontrada para alterar.")
+            return
+
+        self.reservar(usuario, sala, hora_nova)
+
+    def gerar_relatorio(self) -> None:
+        try:
+            with open('daily_report.json', 'w') as file:
+                json.dump(self.reservas, file, ensure_ascii=False, indent=2)
+                print("Relatório daily_report.json gerado.")
+        except:
+            print("Erro ao tentar gerar relatório.")

@@ -73,5 +73,17 @@ def main():
     print()
     gerente.list_salas_disponiveis()
 
+    print()
+    print("=" * 55)
+    print("  CANCELAMENTO DE RESERVA")
+    print("=" * 55)
+ 
+    gerente.alterar(aluno3, sala2, 14, 15)
+ 
+    print()
+    gerente.list_salas_disponiveis()
+
+    gerente.gerar_relatorio()
+
 if __name__ == "__main__":
     main()
