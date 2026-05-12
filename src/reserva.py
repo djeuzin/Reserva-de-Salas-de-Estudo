@@ -136,4 +136,28 @@ class Reserva:
         """
         self._estrategia = strat
 
+    def cancelar(self, usuario, sala, hora: int) -> None:
+        """
+        Cancela uma reserva existente do usuário e notifica todos os observers da sala.
+        """
+        horario_str = str(dt.time(hora, 0, 0))
 
+        reserva = next(
+            (r for r in self.reservas
+             if r["usuario"] == usuario.name
+             and r["sala"] == sala.id
+             and r["hora"] == horario_str),
+            None
+        )
+
+        if reserva is None:
+            usuario.recebe(f"[ERRO] Nenhuma reserva encontrada para cancelar.")
+            return
+
+        self.reservas.remove(reserva)
+        del sala.disponibilidade[horario_str]
+
+        sala.notificar(
+            f"[CANCELADO] Reserva da sala {sala.id} às {horario_str} "
+            f"cancelada por {usuario.name}."
+        )
