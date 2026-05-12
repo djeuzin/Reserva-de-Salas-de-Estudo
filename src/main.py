@@ -83,6 +83,7 @@ def main():
     print()
     gerente.list_salas_disponiveis()
 
+    gerente.gerar_relatorio()
 
 if __name__ == "__main__":
     main()

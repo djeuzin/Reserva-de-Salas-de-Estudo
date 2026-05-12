@@ -2,6 +2,7 @@ import datetime as dt
 import threading
 from sala import Sala
 from estrategia import EstrategiaFila, FilaFIFO
+import json
 
 class Reserva:
     """
@@ -170,3 +171,11 @@ class Reserva:
             return
 
         self.reservar(usuario, sala, hora_nova)
+
+    def gerar_relatorio(self) -> None:
+        try:
+            with open('daily_report.json', 'w') as file:
+                json.dump(self.reservas, file, ensure_ascii=False, indent=2)
+                print("Relatório daily_report.json gerado.")
+        except:
+            print("Erro ao tentar gerar relatório.")
