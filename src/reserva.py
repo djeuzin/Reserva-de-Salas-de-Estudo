@@ -3,20 +3,35 @@ from enum import Enum
 from sala import Sala
 
 class Politica(Enum):
+    """
+    Enum que diferencia as estratégias utilizadas.
+    """
     PRIO_DOCENTE = 1
     PRIO_PRIMEIRO = 2  
 
 class Reserva:
+    """
+    Classe base de reserva. Toda a lógica principal da aplicação se encontra nela.    
+    Suporte para reservas feitas no dia.
+
+    Atributos:
+    - reservas: lista de reservas feitas;
+    - _salas: lista de salas ativas;
+    - _usuarios: lista de usuarios ativos;
+    - _politica: tipo de política de agendamento;
+    - _horarios: lista de horários disponíveis divididos
+    em intervalos de uma hora das 8:00 as 22:00.
+    """
     _instance = None
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(Reserva, cls).__new__(cls)
             cls._instance.reservas = []
-            cls._salas = []
-            cls._usuarios = []
-            cls._politica = Politica.PRIO_PRIMEIRO
-            cls._horarios = []
+            cls._instance._salas = []
+            cls._instance._usuarios = []
+            cls._instance._politica = Politica.PRIO_PRIMEIRO
+            cls._instance._horarios = []
 
             for i in range(8, 23):
                 cls._horarios.append(str(dt.time(i, 0, 0)))
@@ -24,6 +39,11 @@ class Reserva:
         return cls._instance
     
     def reservar(self, usuario, sala, hora):
+        """
+        Reserva uma sala de aula para um usuário
+        dada a hora da reserva sendo ela um inteiro 
+        no intervalo [8,22].
+        """
         try:
             if hora < 8 or hora > 22:
                 print("Horário indisponível para reserva.")
@@ -60,15 +80,24 @@ class Reserva:
             sala.notificar(mensagem)
 
     def add_sala(self, s: Sala) -> None:
+        """
+        Adiciona uma sala a lista de salas ativas.
+        """
         self._salas.append(s)
 
     def remove_sala(self, s: Sala) -> None:
+        """
+        Remove uma sala da lista de salas ativas.
+        """
         try:
             self._salas.remove(s)
         except:
             print("Sala não existe.")
 
     def list_salas_disponiveis(self):
+        """
+        Lista as salas com horários disponíveis.
+        """
         print('')
         print("--- Horários disponíveis para reserva ---")
         print('')
